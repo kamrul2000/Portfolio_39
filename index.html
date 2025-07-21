@@ -589,7 +589,7 @@
         <div class="contact-form card" data-aos="fade-up" data-aos-delay="300">
           <div class="card-body p-4 p-lg-5">
 
-<form name="contact" method="POST" data-netlify="true">
+<form name="contact" method="POST" data-netlify="true" id="contactForm" onsubmit="handleSubmit(event)">
   <input type="hidden" name="form-name" value="contact">
   
   <div class="row gy-4">
@@ -614,6 +614,8 @@
     </div>
   </div>
 </form>
+
+
 
 
 
@@ -661,8 +663,42 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
 
+
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function handleSubmit(event) {
+    event.preventDefault(); // Prevent page refresh
+    
+    const form = document.getElementById("contactForm");
+    const formData = new FormData(form);
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    })
+    .then(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Message Sent!',
+        text: 'Thank you for contacting me.',
+        confirmButtonColor: '#3085d6'
+      });
+      form.reset(); // clear form
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops!',
+        text: 'Something went wrong. Please try again.',
+        confirmButtonColor: '#d33'
+      });
+    });
+  }
+</script>
+
 
 </body>
 
